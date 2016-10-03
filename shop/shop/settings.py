@@ -37,8 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'shop_api'
 ]
-
+REST_FRAMEWORK = {
+     'COMPACT_JSON': not DEBUG,
+    # 'EXCEPTION_HANDLER': 'shop_api.webapi_common.bf_exception_handler',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -80,7 +88,16 @@ DATABASES = {
     }
 }
 
-
+CORS_ALLOW_HEADERS = (
+    'X-Requested-By',
+    'X-Tenant',
+    'Content-Type',
+    'Accept',
+    'Origin',
+    'User-Agent',
+    'Accept-Encoding',
+)
+CORS_ALLOW_METHODS = ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS')
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
