@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
 from shop_core.model.profile import Profile
 from django.contrib.auth.models import UserManager
-from django.db import IntegrityError
-from shop_core.common.errors import SaveEntityError
 
 __author__ = 'artem'
 
