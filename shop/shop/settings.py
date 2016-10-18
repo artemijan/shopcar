@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'shop_api'
+    'shop_api',
+    'shop_core'
 ]
 REST_FRAMEWORK = {
      'COMPACT_JSON': not DEBUG,
@@ -56,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+AUTH_USER_MODEL = 'shop_core.Account'
 ROOT_URLCONF = 'shop.urls'
 
 TEMPLATES = [

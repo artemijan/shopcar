@@ -1,5 +1,7 @@
-from common.controllers import AnonymousView, ShopApiResponse
-from shop_api.auth.dto import SignInDto
+from shop_core.common.controllers import AnonymousView, ShopApiResponse
+from shop_core.common.errors import SaveEntityError
+from shop_core.services.account_service import create_account
+from shop_api.auth.dto import SignInDto, SignUpDto, UserDto
 from django.contrib.auth import authenticate, login, logout
 
 __author__ = 'artem'
@@ -25,3 +27,23 @@ class SignOutController(AnonymousView):
         logout(request)
         return ShopApiResponse.success("Logged out")
 
+
+class SignUpController(AnonymousView):
+    def post(self, request):
+        dto = SignUpDto.from_dict(request.data)
+        if not dto.is_valid():
+            return ShopApiResponse.bad_request(dto)
+        try:
+            create_account(
+                username=dto.username,
+                email=dto.email,
+                password=dto.password,
+                first_name=dto.first_name,
+                last_name=dto.last_name
+            )
+        except SaveEntityError as e:
+            return ShopApiResponse.bad_request(str(e))
+        user = authenticate(username=dto.username, password=dto.password)
+        login(request, user)
+        user_dto = UserDto.from_account_model(user)
+        return ShopApiResponse.success(user_dto)
