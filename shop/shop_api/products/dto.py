@@ -15,14 +15,17 @@ class LightCategoryDto(ShopBaseDto):
 
 
 class ProductDto(ShopBaseDto):
-    name = serializers.CharField()
+    id = serializers.IntegerField(allow_null=True)
+    name = serializers.CharField(allow_null=True, allow_blank=False)
+    categories = serializers.ListField(allow_null=True, allow_empty=True)
 
     @classmethod
     def from_product_model(cls, product):
         dto = cls()
+        dto.id = product.id
         dto.name = product.name
-        dto.categories = []
         if getattr(product, 'categories', None) is not None:
+            dto.categories = []
             for category in product.categories:
                 dto.categories.append(LightCategoryDto.from_category_model(category))
         return dto

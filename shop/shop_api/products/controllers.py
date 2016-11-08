@@ -1,5 +1,5 @@
 from shop_api.products.dto import ProductDto
-from shop_core.common.controllers import ShopApiView, ShopApiResponse, AnonymousView
+from shop_core.common.controllers import ShopApiView, ShopApiResponse
 import shop_core.services.products_service as product_service
 from shop_core.common.errors import SaveEntityError
 
@@ -13,6 +13,16 @@ class ManageController(ShopApiView):
             return ShopApiResponse.bad_request(dto)
         try:
             product = product_service.create_product(name=dto.name)
+            return ShopApiResponse.success(ProductDto.from_product_model(product))
+        except SaveEntityError as e:
+            return ShopApiResponse.bad_request(str(e))
+
+    def put(self, request, user_id=None):
+        dto = ProductDto.from_dict(request.data)
+        if not dto.is_valid():
+            return ShopApiResponse.bad_request(dto)
+        try:
+            product = product_service.update_product(product_pk=user_id, category_pks=dto.categories)
             return ShopApiResponse.success(ProductDto.from_product_model(product))
         except SaveEntityError as e:
             return ShopApiResponse.bad_request(str(e))
