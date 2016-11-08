@@ -8,7 +8,7 @@ __author__ = 'artem'
 
 
 class SignInController(AnonymousView):
-    def post(selfself, request):
+    def post(self, request):
         dto = SignInDto.from_dict(request.data)
         if not dto.is_valid():
             return ShopApiResponse.bad_request(dto)

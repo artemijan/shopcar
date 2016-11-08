@@ -6,7 +6,7 @@ from shop_core.common.errors import SaveEntityError
 __author__ = 'artem'
 
 
-class ManageController(AnonymousView):
+class ManageController(ShopApiView):
     def post(self, request):
         dto = ProductDto.from_dict(request.data)
         if not dto.is_valid():
