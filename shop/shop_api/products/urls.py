@@ -6,5 +6,5 @@ __author__ = 'artem'
 
 urlpatterns = [
     url(r'^list$', ListController.as_view()),
-    url(r'^(?P<user_id>[0-9]+)$', ManageController.as_view())
+    url(r'^(?P<product_id>[0-9]+)$', ManageController.as_view())
 ]

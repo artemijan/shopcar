@@ -1,7 +1,7 @@
 from shop_api.products.dto import ProductDto
 from shop_core.common.controllers import ShopApiView, ShopApiResponse
 import shop_core.services.products_service as product_service
-from shop_core.common.errors import SaveEntityError
+from shop_core.common.errors import SaveEntityError, NotFoundError
 
 __author__ = 'artem'
 
@@ -17,12 +17,19 @@ class ManageController(ShopApiView):
         except SaveEntityError as e:
             return ShopApiResponse.bad_request(str(e))
 
-    def put(self, request, user_id=None):
+    def get(self, request, product_id=None):
+        try:
+            product = product_service.get_by_id(id=product_id)
+            return ShopApiResponse.success(ProductDto.from_product_model(product))
+        except NotFoundError as e:
+            return ShopApiResponse.bad_request(str(e))
+
+    def put(self, request, product_id=None):
         dto = ProductDto.from_dict(request.data)
         if not dto.is_valid():
             return ShopApiResponse.bad_request(dto)
         try:
-            product = product_service.update_product(product_pk=user_id, category_pks=dto.categories)
+            product = product_service.update_product(product_pk=product_id, category_pks=dto.categories)
             return ShopApiResponse.success(ProductDto.from_product_model(product))
         except SaveEntityError as e:
             return ShopApiResponse.bad_request(str(e))

@@ -1,9 +1,16 @@
 from django.db import transaction, IntegrityError
 from shop_core.model.product import Product
 from shop_core.model.category import Category
-from shop_core.common.errors import SaveEntityError
+from shop_core.common.errors import SaveEntityError, NotFoundError
 
 __author__ = 'artem'
+
+
+def get_by_id(id=None):
+    try:
+        return Product.objects.get(pk=id)
+    except IntegrityError:
+        raise NotFoundError('Cannot find product')
 
 
 def fetch_products():

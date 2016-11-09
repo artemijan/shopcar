@@ -5,5 +5,5 @@ __author__ = 'artem'
 
 urlpatterns = [
     url(r'^list$', ListController.as_view()),
-    url(r'^$', ManageController.as_view())
+    url(r'^(?P<category_id>[0-9]+)$', ManageController.as_view())
 ]
