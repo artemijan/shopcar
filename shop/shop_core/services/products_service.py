@@ -9,8 +9,17 @@ __author__ = 'artem'
 def get_by_id(id=None):
     try:
         return Product.objects.get(pk=id)
-    except IntegrityError:
+    except Product.DoesNotExist:
         raise NotFoundError('Cannot find product')
+
+
+def remove_by_id(id=None):
+    try:
+        product = get_by_id(id=id)
+        product.delete()
+        return product
+    except IntegrityError:
+        raise SaveEntityError('Cannot delete category')
 
 
 def fetch_products():

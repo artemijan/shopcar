@@ -1,9 +1,25 @@
 from django.db import transaction, IntegrityError
 from shop_core.model.category import Category
 from shop_core.model.product import Product
-from shop_core.common.errors import SaveEntityError
+from shop_core.common.errors import SaveEntityError, NotFoundError
 
 __author__ = 'artem'
+
+
+def get_by_id(id=None):
+    try:
+        return Category.objects.get(pk=id)
+    except Category.DoesNotExist:
+        raise NotFoundError('Cannot find category')
+
+
+def remove_by_id(id=None):
+    try:
+        category = get_by_id(id=id)
+        category.delete()
+        return category
+    except IntegrityError:
+        raise SaveEntityError('Cannot delete category')
 
 
 def fetch_categories():

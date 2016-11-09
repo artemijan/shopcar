@@ -24,6 +24,13 @@ class ManageController(ShopApiView):
         except NotFoundError as e:
             return ShopApiResponse.bad_request(str(e))
 
+    def delete(self, request, product_id):
+        try:
+            product = product_service.remove_by_id(id=product_id)
+            return ProductDto.from_product_model(product)
+        except SaveEntityError as e:
+            return ShopApiResponse.bad_request(str(e))
+
     def put(self, request, product_id=None):
         dto = ProductDto.from_dict(request.data)
         if not dto.is_valid():

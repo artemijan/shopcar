@@ -19,9 +19,16 @@ class ManageController(ShopApiView):
 
     def get(self, request, category_id=None):
         try:
-            product = category_service.get_by_id(id=category_id)
-            return ShopApiResponse.success(CategoryDto.from_product_model(product))
+            category = category_service.get_by_id(id=category_id)
+            return ShopApiResponse.success(CategoryDto.from_product_model(category))
         except NotFoundError as e:
+            return ShopApiResponse.bad_request(str(e))
+
+    def delete(self, request, category_id):
+        try:
+            category = category_service.remove_by_id(id=category_id)
+            return CategoryDto.from_category_model(category)
+        except SaveEntityError as e:
             return ShopApiResponse.bad_request(str(e))
 
     def put(self, request, category_id=None):
@@ -29,8 +36,8 @@ class ManageController(ShopApiView):
         if not dto.is_valid():
             return ShopApiResponse.bad_request(dto)
         try:
-            product = category_service.update_category(category_pk=category_id, product_pks=dto.products)
-            return ShopApiResponse.success(CategoryDto.from_product_model(product))
+            category = category_service.update_category(category_pk=category_id, product_pks=dto.products)
+            return ShopApiResponse.success(CategoryDto.from_product_model(category))
         except SaveEntityError as e:
             return ShopApiResponse.bad_request(str(e))
 
