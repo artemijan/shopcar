@@ -1,30 +1,27 @@
 import django.db.transaction as transaction
-from shop_core.common.errors import SaveEntityError
+from shop_core.common.errors import SaveEntityError, NotFoundError
 from shop_core.model.auth import Account, ProfileEmails
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from shop_core.model.profile import Profile
 __author__ = 'artem'
 
 
 def get_account_by_username(username):
-    account = Account.objects.get_by_natural_key(username)
-    # todo:  handle errors
-    # TODO: ensure fetching of realted profile and emails
-    return account
-
-
-def get_account_by_email(email):
     try:
-        acc = get_account_by_email(email)
-        return acc
-    except ObjectDoesNotExist:
-        raise ObjectDoesNotExist('Could not fetch account by this email, probably account does not exist or deleted')
+        account = Account.objects.get_by_natural_key(username)
+        # todo:  handle errors
+        # TODO: ensure fetching of related profile and emails
+        return account
+    except Account.DoesNotExist:
+        raise NotFoundError('Could not fetch account by this email, probably account does not exist or deleted')
 
 
 def get_account_by_email(email=None):
-    account = Account.objects.get(primary_email=email)
-    return account
+    try:
+        account = Account.objects.get(primary_email=email)
+        return account
+    except Account.DoesNotExist:
+        raise NotFoundError('Could not fetch account by this email, probably account does not exist or deleted')
 
 
 @transaction.atomic

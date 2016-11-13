@@ -49,4 +49,6 @@ def update_product(product_pk=None, product_name=None, category_pks=None):
         product.save()
     except IntegrityError:
         raise SaveEntityError('Cannot set categories to product')
+    except Product.DoesNotExist:
+        raise SaveEntityError('Cannot find product to update')
     return product

@@ -36,7 +36,10 @@ class ManageController(ShopApiView):
         if not dto.is_valid():
             return ShopApiResponse.bad_request(dto)
         try:
-            category = category_service.update_category(category_pk=category_id, product_pks=dto.products)
+            category = category_service.update_category(category_pk=category_id,
+                                                        category_name=dto.name,
+                                                        category_group_pks=dto.grops,
+                                                        product_pks=dto.products)
             return ShopApiResponse.success(CategoryDto.from_product_model(category))
         except SaveEntityError as e:
             return ShopApiResponse.bad_request(str(e))
