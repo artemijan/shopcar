@@ -38,7 +38,7 @@ class ManageController(ShopApiView):
         try:
             category = category_service.update_category(category_pk=category_id,
                                                         category_name=dto.name,
-                                                        category_group_pks=dto.grops,
+                                                        category_group_pk=dto.grop,
                                                         product_pks=dto.products)
             return ShopApiResponse.success(CategoryDto.from_product_model(category))
         except SaveEntityError as e:

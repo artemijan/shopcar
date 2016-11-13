@@ -10,4 +10,4 @@ class Category(models.Model):
 
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True, null=False)
     product = models.ManyToManyField(Product, related_name='products')
-    category_groups = models.ForeignKey(CategoryGroup, on_delete=models.CASCADE, null=False)
+    category_group = models.ForeignKey(CategoryGroup, on_delete=models.CASCADE, null=False)

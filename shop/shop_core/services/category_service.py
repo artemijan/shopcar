@@ -39,7 +39,7 @@ def create_category(name=None):
 
 
 @transaction.atomic
-def update_category(category_pk=None, category_name=None, product_pks=None, category_group_pks=None):
+def update_category(category_pk=None, category_name=None, product_pks=None, category_group_pk=None):
     try:
         category = Category.objects.get(pk=category_pk)
         if category_name is not None:
@@ -47,9 +47,9 @@ def update_category(category_pk=None, category_name=None, product_pks=None, cate
         if product_pks is not None:
             products = Product.objects.filter(pk__in=product_pks)
             category.products = products
-        if category_group_pks is not None:
-            category_groups = CategoryGroup.objectsfilter(pk__in=category_group_pks)
-            category.category_groups = category_groups
+        if category_group_pk is not None:
+            category_group = CategoryGroup.objects.get(pk_=category_group_pk)
+            category.category_group = category_group
         category.save()
     except IntegrityError:
         raise SaveEntityError('Cannot set products to category')
