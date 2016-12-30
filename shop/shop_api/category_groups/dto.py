@@ -13,4 +13,4 @@ class CategoryGroupDto(ShopBaseDto):
         dto = cls()
         dto.id = category.id
         dto.name = category.name
-        return dto
+        return dto.to_dict()

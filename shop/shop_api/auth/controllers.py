@@ -19,7 +19,7 @@ class SignInController(AnonymousView):
             return ShopApiResponse.bad_request("Inactive user")
         login(request, user)
         # todo return users dto back to client
-        return ShopApiResponse.success({})
+        return ShopApiResponse.success(UserDto.from_account_model(user))
 
 
 class SignOutController(AnonymousView):

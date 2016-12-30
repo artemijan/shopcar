@@ -41,4 +41,4 @@ class UserDto(ShopBaseDto):
         dto.last_name = profile.last_name
         dto.first_name = profile.first_name
         dto.email = account.primary_email.pk
-        return dto
+        return dto.to_dict()

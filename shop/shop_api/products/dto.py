@@ -11,7 +11,7 @@ class LightCategoryDto(ShopBaseDto):
     def from_category_model(cls, category):
         dto = cls()
         dto.name = category.name
-        return dto
+        return dto.to_dict()
 
 
 class ProductDto(ShopBaseDto):
@@ -28,4 +28,4 @@ class ProductDto(ShopBaseDto):
             dto.categories = []
             for category in product.categories:
                 dto.categories.append(LightCategoryDto.from_category_model(category))
-        return dto
+        return dto.to_dict()

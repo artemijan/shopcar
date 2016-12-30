@@ -11,17 +11,19 @@ class LightProductDto(ShopBaseDto):
     def from_product_model(cls, product):
         dto = cls()
         dto.name = product.name
-        return dto
+        return dto.to_dict()
 
 
 class LightCategoryGroupDto(ShopBaseDto):
     name = serializers.CharField()
+    id = serializers.IntegerField()
 
     @classmethod
     def from_category_group_model(cls, category_group):
         dto = cls()
         dto.name = category_group.name
-        return dto
+        dto.id = category_group.id
+        return dto.to_dict()
 
 
 class CategoryDto(ShopBaseDto):
@@ -36,9 +38,9 @@ class CategoryDto(ShopBaseDto):
         dto.id = category.id
         dto.name = category.name
         if getattr(category, 'products', None) is not None:
-            dto.categories = []
+            dto.products = []
             for product in category.products:
-                dto.categories.append(LightProductDto.from_product_model(product))
+                dto.products.append(LightProductDto.from_product_model(product))
         if getattr(category, 'category_group', None) is not None:
-            dto.group = LightProductDto.from_category_group_model(category.category_group)
-        return dto
+            dto.group = LightCategoryGroupDto.from_category_group_model(category.category_group)
+        return dto.to_dict()
