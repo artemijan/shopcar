@@ -24,7 +24,9 @@ SECRET_KEY = 'i3z4a6x*6*3x@_+lbvt7u-yu-t(nt0fz#=-4ien=l_2@phmx5!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost'
+]
 
 # Application definition
 
@@ -35,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'shop_api',
     'shop_core'
 ]
@@ -46,14 +49,16 @@ REST_FRAMEWORK = {
     )
 }
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+SESSION_KEY_NAME = 'Session-Token'
 AUTH_USER_MODEL = 'shop_core.Account'
 ROOT_URLCONF = 'shop.urls'
 
@@ -85,14 +90,10 @@ DATABASES = {
     }
 }
 
-CORS_ALLOW_HEADERS = (
-    'X-Requested-By',
-    'Content-Type',
-    'Accept',
-    'Origin',
-    'User-Agent',
-    'Accept-Encoding',
+CORS_ORIGIN_WHITELIST = (
+    'localhost:9000'
 )
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS')
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

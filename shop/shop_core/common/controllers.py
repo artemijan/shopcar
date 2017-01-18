@@ -92,7 +92,7 @@ class JsonRenderer(JSONRenderer):
         return None if self.compact else 4
 
     def render(self, api_response, accepted_media_type=None, renderer_context=None):
-        assert isinstance(api_response, ShopApiResponseDto), "api_response should be an instance of ShopApiResponseDto"
+        # assert isinstance(api_response, ShopApiResponseDto), "api_response should be an instance of ShopApiResponseDto"
         return super().render(api_response, accepted_media_type, renderer_context)
 
 
